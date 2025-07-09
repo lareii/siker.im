@@ -15,7 +15,7 @@ export default function Shortener() {
           placeholder="Kısaltılmış URL (isteğe bağlı)"
           className="bg-card text-muted-foreground text-sm"
         />
-        <Button className="cursor-pointer">kısalt</Button>
+        <Button variant="ghost" className="w-24 cursor-pointer animated-glow">kısalt</Button>
       </div>
       <div className="text-muted-foreground text-xs">
         Boş bırakırsan rastgele bir kısaltma oluşturulur.

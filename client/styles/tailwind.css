@@ -77,12 +77,3 @@
   --sidebar-border: oklch(1 0 0 / 10%);
   --sidebar-ring: oklch(0.554 0.135 66.442);
 }
-
-@layer base {
-  * {
-    @apply border-border outline-ring/50;
-  }
-  body {
-    @apply bg-background text-foreground font-[family-name:var(--font-bricolage-grotesque-sans)];
-  }
-}

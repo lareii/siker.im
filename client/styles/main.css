@@ -1,1 +1,31 @@
 @import './tailwind.css';
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground font-[family-name:var(--font-bricolage-grotesque-sans)];
+  }
+}
+
+@layer utilities {
+  @keyframes glow-color-shift {
+    0% {
+      box-shadow: 0 0 10px #9333ea;
+    }
+    33% {
+      box-shadow: 0 0 10px #3b82f6;
+    }
+    66% {
+      box-shadow: 0 0 10px #ec4899;
+    }
+    100% {
+      box-shadow: 0 0 10px #9333ea;
+    }
+  }
+
+  .animated-glow {
+    animation: glow-color-shift 3s infinite;
+  }
+}
