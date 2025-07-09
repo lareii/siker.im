@@ -7,7 +7,7 @@ import Image from 'next/image';
 
 export default function MainContent() {
   return (
-    <main className="p-5 max-w-screen-lg mx-auto mt-20 relative">
+    <main className="p-5 max-w-screen-lg mx-auto max-sm:mt-10 mt-20 relative">
       <div>
         <div className="relative z-20">
           <AnnouncementBanner />
