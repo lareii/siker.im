@@ -1,15 +1,18 @@
 CERTS_DIR = .certs/
 LOG_FILE =  app.log
 
-run: $(CERTS_DIR)
+run: $(CERTS_DIR) $(LOG_FILE)
 	touch $(LOG_FILE)
 	sudo docker compose up -d
 
-stop:
-	sudo docker compose down
-
 $(CERTS_DIR):
 	./scripts/certs.sh
+
+$(LOG_FILE):
+	touch $(LOG_FILE)
+
+stop:
+	sudo docker compose down
 
 clean:
 	sudo docker compose down
