@@ -43,7 +43,7 @@ type RateLimitConfig struct {
 func Load() (*Config, error) {
 	return &Config{
 		Server: ServerConfig{
-			Port: getEnv("PORT", "8080"),
+			Port: getEnv("PORT", "1209"),
 		},
 		Database: DatabaseConfig{
 			URI:  getEnv("MONGODB_URI", "mongodb://localhost:27017"),

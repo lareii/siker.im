@@ -34,3 +34,9 @@ go.work.sum
 
 # Logs
 *.log
+
+# certificates
+.certs/
+*.pem
+*.key
+*.crt
