@@ -1,12 +1,16 @@
 package config
 
-import "os"
+import (
+	"time"
+)
 
 type Config struct {
-	Server   ServerConfig
-	Database DatabaseConfig
-	App      AppConfig
-	LogLevel string
+	Server    ServerConfig
+	Database  DatabaseConfig
+	Redis     RedisConfig
+	App       AppConfig
+	RateLimit RateLimitConfig
+	LogLevel  string
 }
 
 type ServerConfig struct {
@@ -18,9 +22,22 @@ type DatabaseConfig struct {
 	Name string
 }
 
+type RedisConfig struct {
+	Host     string
+	Port     string
+	Password string
+	DB       int
+}
+
 type AppConfig struct {
-	BaseURL        string
 	AllowedOrigins string
+}
+
+type RateLimitConfig struct {
+	Enabled   bool
+	Requests  int
+	Window    time.Duration
+	BlockTime time.Duration
 }
 
 func Load() (*Config, error) {
@@ -32,17 +49,21 @@ func Load() (*Config, error) {
 			URI:  getEnv("MONGODB_URI", "mongodb://localhost:27017"),
 			Name: getEnv("MONGODB_NAME", "db"),
 		},
+		Redis: RedisConfig{
+			Host:     getEnv("REDIS_HOST", "localhost"),
+			Port:     getEnv("REDIS_PORT", "6379"),
+			Password: getEnv("REDIS_PASSWORD", ""),
+			DB:       getEnvAsInt("REDIS_DB", 0),
+		},
 		App: AppConfig{
-			BaseURL:        getEnv("BASE_URL", "http://localhost:8080"),
 			AllowedOrigins: getEnv("ALLOWED_ORIGINS", "*"),
+		},
+		RateLimit: RateLimitConfig{
+			Enabled:   getEnvAsBool("RATE_LIMIT_ENABLED", true),
+			Requests:  getEnvAsInt("RATE_LIMIT_REQUESTS", 100),
+			Window:    time.Duration(getEnvAsInt("RATE_LIMIT_WINDOW_MINUTES", 1)) * time.Minute,
+			BlockTime: time.Duration(getEnvAsInt("RATE_LIMIT_BLOCK_MINUTES", 5)) * time.Minute,
 		},
 		LogLevel: getEnv("LOG_LEVEL", "info"),
 	}, nil
-}
-
-func getEnv(key, defaultValue string) string {
-	if value := os.Getenv(key); value != "" {
-		return value
-	}
-	return defaultValue
 }

@@ -9,7 +9,6 @@ import (
 
 	"go.mongodb.org/mongo-driver/v2/bson"
 	"go.mongodb.org/mongo-driver/v2/mongo"
-	"go.mongodb.org/mongo-driver/v2/mongo/options"
 )
 
 type URLRepository struct {
@@ -60,30 +59,30 @@ func (r *URLRepository) GetByID(ctx context.Context, id bson.ObjectID) (*models.
 	return &url, nil
 }
 
-func (r *URLRepository) GetAll(ctx context.Context, limit, offset int64) ([]*models.URL, error) {
-	filter := bson.M{"is_active": true}
-	options := options.Find().
-		SetLimit(limit).
-		SetSkip(offset).
-		SetSort(bson.M{"created_at": -1})
+// func (r *URLRepository) GetAll(ctx context.Context, limit, offset int64) ([]*models.URL, error) {
+// 	filter := bson.M{"is_active": true}
+// 	options := options.Find().
+// 		SetLimit(limit).
+// 		SetSkip(offset).
+// 		SetSort(bson.M{"created_at": -1})
 
-	cursor, err := r.collection.Find(ctx, filter, options)
-	if err != nil {
-		return nil, err
-	}
-	defer cursor.Close(ctx)
+// 	cursor, err := r.collection.Find(ctx, filter, options)
+// 	if err != nil {
+// 		return nil, err
+// 	}
+// 	defer cursor.Close(ctx)
 
-	var urls []*models.URL
-	for cursor.Next(ctx) {
-		var url models.URL
-		if err := cursor.Decode(&url); err != nil {
-			return nil, err
-		}
-		urls = append(urls, &url)
-	}
+// 	var urls []*models.URL
+// 	for cursor.Next(ctx) {
+// 		var url models.URL
+// 		if err := cursor.Decode(&url); err != nil {
+// 			return nil, err
+// 		}
+// 		urls = append(urls, &url)
+// 	}
 
-	return urls, cursor.Err()
-}
+// 	return urls, cursor.Err()
+// }
 
 func (r *URLRepository) IncrementClickCount(ctx context.Context, slug string) error {
 	filter := bson.M{"slug": slug, "is_active": true}

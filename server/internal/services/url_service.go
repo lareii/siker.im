@@ -14,14 +14,12 @@ import (
 )
 
 type URLService struct {
-	repo    *repository.URLRepository
-	baseURL string
+	repo *repository.URLRepository
 }
 
-func NewURLService(repo *repository.URLRepository, baseURL string) *URLService {
+func NewURLService(repo *repository.URLRepository) *URLService {
 	return &URLService{
-		repo:    repo,
-		baseURL: baseURL,
+		repo: repo,
 	}
 }
 
@@ -111,14 +109,14 @@ func (s *URLService) GetTargetURL(ctx context.Context, slug string) (string, err
 	return url.TargetURL, nil
 }
 
-func (s *URLService) DeleteURL(ctx context.Context, id string) error {
-	objectID, err := bson.ObjectIDFromHex(id)
-	if err != nil {
-		return errors.New("invalid url id")
-	}
+// func (s *URLService) DeleteURL(ctx context.Context, id string) error {
+// 	objectID, err := bson.ObjectIDFromHex(id)
+// 	if err != nil {
+// 		return errors.New("invalid url id")
+// 	}
 
-	return s.repo.Delete(ctx, objectID)
-}
+// 	return s.repo.Delete(ctx, objectID)
+// }
 
 func (s *URLService) toResponse(url *models.URL) *models.URLResponse {
 	return &models.URLResponse{

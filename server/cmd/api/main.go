@@ -11,6 +11,7 @@ import (
 	"github.com/lareii/siker.im/internal/config"
 	"github.com/lareii/siker.im/internal/database"
 	"github.com/lareii/siker.im/internal/handlers"
+	"github.com/lareii/siker.im/internal/middleware"
 	"github.com/lareii/siker.im/internal/repository"
 	"github.com/lareii/siker.im/internal/services"
 	"github.com/lareii/siker.im/pkg/logger"
@@ -41,11 +42,19 @@ func main() {
 		logger.Fatal("Failed to connect to database", zap.Error(err))
 	}
 	defer db.Disconnect(context.Background())
-	logger.Info("Connected to database")
+	logger.Info("Connected to MongoDB", zap.String("uri", cfg.Database.URI))
+
+	redis, err := database.NewRedis(cfg.Redis.Host, cfg.Redis.Port, cfg.Redis.Password, cfg.Redis.DB)
+	if err != nil {
+		logger.Fatal("Failed to connect to Redis", zap.Error(err))
+	}
+	defer redis.Close()
+	logger.Info("Connected to Redis", zap.String("host", cfg.Redis.Host), zap.String("port", cfg.Redis.Port))
 
 	urlRepo := repository.NewURLRepository(db)
-	urlService := services.NewURLService(urlRepo, cfg.App.BaseURL)
+	urlService := services.NewURLService(urlRepo)
 	urlHandler := handlers.NewURLHandler(urlService, logger)
+	rateLimiter := middleware.NewRateLimiter(redis, &cfg.RateLimit, logger)
 
 	app := fiber.New(fiber.Config{
 		AppName:      "siker.im",
@@ -62,9 +71,10 @@ func main() {
 	app.Use(requestid.New())
 	app.Use(cors.New(cors.Config{
 		AllowOrigins: []string{cfg.App.AllowedOrigins},
-		AllowMethods: []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
+		AllowMethods: []string{"GET", "POST", "OPTIONS"},
 		AllowHeaders: []string{"Origin", "Content-Type", "Accept"},
 	}))
+	app.Use(rateLimiter.Middleware())
 
 	setupRoutes(app, urlHandler)
 
@@ -96,8 +106,8 @@ func setupRoutes(app *fiber.App, urlHandler *handlers.URLHandler) {
 			"message": "OK!",
 		})
 	})
+
 	app.Post("/urls", urlHandler.CreateURL)
 	app.Get("/urls/:param", urlHandler.GetURL)
-	app.Delete("/urls/:id", urlHandler.DeleteURL)
 	app.Get("/:slug", urlHandler.RedirectURL)
 }

@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"github.com/lareii/siker.im/internal/middleware"
 	"github.com/lareii/siker.im/internal/models"
 	"github.com/lareii/siker.im/internal/services"
 	"go.mongodb.org/mongo-driver/v2/bson"
@@ -10,8 +11,9 @@ import (
 )
 
 type URLHandler struct {
-	service *services.URLService
-	logger  *zap.Logger
+	service     *services.URLService
+	rateLimiter *middleware.RateLimiter
+	logger      *zap.Logger
 }
 
 func NewURLHandler(service *services.URLService, logger *zap.Logger) *URLHandler {
@@ -19,6 +21,10 @@ func NewURLHandler(service *services.URLService, logger *zap.Logger) *URLHandler
 		service: service,
 		logger:  logger,
 	}
+}
+
+func (h *URLHandler) SetRateLimiter(rateLimiter *middleware.RateLimiter) {
+	h.rateLimiter = rateLimiter
 }
 
 func (h *URLHandler) CreateURL(c fiber.Ctx) error {
@@ -72,23 +78,23 @@ func (h *URLHandler) GetURL(c fiber.Ctx) error {
 	return c.JSON(url)
 }
 
-func (h *URLHandler) DeleteURL(c fiber.Ctx) error {
-	id := c.Params("id")
-	if id == "" {
-		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
-			"error": "URL ID is required",
-		})
-	}
+// func (h *URLHandler) DeleteURL(c fiber.Ctx) error {
+// 	id := c.Params("id")
+// 	if id == "" {
+// 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+// 			"error": "URL ID is required",
+// 		})
+// 	}
 
-	if err := h.service.DeleteURL(c.Context(), id); err != nil {
-		h.logger.Error("Failed to delete URL", zap.Error(err))
-		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
-			"error": "Failed to delete URL",
-		})
-	}
+// 	if err := h.service.DeleteURL(c.Context(), id); err != nil {
+// 		h.logger.Error("Failed to delete URL", zap.Error(err))
+// 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+// 			"error": "Failed to delete URL",
+// 		})
+// 	}
 
-	return c.Status(fiber.StatusNoContent).Send(nil)
-}
+// 	return c.Status(fiber.StatusNoContent).Send(nil)
+// }
 
 func (h *URLHandler) RedirectURL(c fiber.Ctx) error {
 	slug := c.Params("slug")
