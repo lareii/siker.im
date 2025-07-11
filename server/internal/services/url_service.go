@@ -75,7 +75,7 @@ func (s *URLService) GetURLByID(ctx context.Context, id bson.ObjectID) (*models.
 	url, err := s.repo.GetByID(ctx, id)
 	if err != nil {
 		if errors.Is(err, mongo.ErrNoDocuments) {
-			return nil, errors.New("URL not found")
+			return nil, errors.New("url not found")
 		}
 		return nil, err
 	}
@@ -87,7 +87,7 @@ func (s *URLService) GetURLBySlug(ctx context.Context, slug string) (*models.URL
 	url, err := s.repo.GetBySlug(ctx, slug)
 	if err != nil {
 		if errors.Is(err, mongo.ErrNoDocuments) {
-			return nil, errors.New("URL not found")
+			return nil, errors.New("url not found")
 		}
 		return nil, err
 	}
@@ -99,7 +99,7 @@ func (s *URLService) GetTargetURL(ctx context.Context, slug string) (string, err
 	url, err := s.repo.GetBySlug(ctx, slug)
 	if err != nil {
 		if errors.Is(err, mongo.ErrNoDocuments) {
-			return "", errors.New("URL not found")
+			return "", errors.New("url not found")
 		}
 		return "", err
 	}
@@ -114,7 +114,7 @@ func (s *URLService) GetTargetURL(ctx context.Context, slug string) (string, err
 func (s *URLService) DeleteURL(ctx context.Context, id string) error {
 	objectID, err := bson.ObjectIDFromHex(id)
 	if err != nil {
-		return errors.New("invalid URL ID")
+		return errors.New("invalid url id")
 	}
 
 	return s.repo.Delete(ctx, objectID)
