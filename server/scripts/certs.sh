@@ -43,7 +43,7 @@ extendedKeyUsage = serverAuth
 
 [ alt_names ]
 DNS.1 = $DNS_NAME
-IP.1 = $IP
+IP.1 = $INTERNAL_IP
 IP.2 = $EXTERNAL_IP
 EOF
 
