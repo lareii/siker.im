@@ -3,7 +3,7 @@ set -euo pipefail
 
 ORG="siker.im"
 INTERNAL_IP="127.0.0.1"
-EXTERNAL_IP="x.x.x.x"
+EXTERNAL_IP=$(ip route get 1 | awk '{for(i=1;i<=NF;i++) if ($i=="src") print $(i+1)}')
 DNS_NAME="mongodb"
 COUNTRY="TR"
 STATE="Istanbul"
