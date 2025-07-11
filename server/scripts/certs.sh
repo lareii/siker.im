@@ -2,7 +2,8 @@
 set -euo pipefail
 
 ORG="siker.im"
-IP="127.0.0.1"
+INTERNAL_IP="127.0.0.1"
+EXTERNAL_IP="x.x.x.x"
 DNS_NAME="mongodb"
 COUNTRY="TR"
 STATE="Istanbul"
@@ -43,6 +44,7 @@ extendedKeyUsage = serverAuth
 [ alt_names ]
 DNS.1 = $DNS_NAME
 IP.1 = $IP
+IP.2 = $EXTERNAL_IP
 EOF
 
 # server key and csr
