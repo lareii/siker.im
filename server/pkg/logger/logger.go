@@ -28,7 +28,10 @@ func New(level string) *zap.Logger {
 		lvl = zapcore.InfoLevel
 	}
 
-	fileWriter, _ := os.Create("app.log")
+	fileWriter, err := os.OpenFile("app.log", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
+	if err != nil {
+		panic(err)
+	}
 	multiWriteSyncer := zapcore.NewMultiWriteSyncer(
 		zapcore.AddSync(os.Stdout),
 		zapcore.AddSync(fileWriter),
