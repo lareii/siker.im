@@ -1,28 +1,45 @@
 package logger
 
 import (
+	"os"
+
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
 )
 
 func New(level string) *zap.Logger {
-	config := zap.NewProductionConfig()
+	encoderConfig := zap.NewDevelopmentEncoderConfig()
+	encoderConfig.EncodeLevel = zapcore.CapitalColorLevelEncoder
+	encoderConfig.TimeKey = "time"
+	encoderConfig.EncodeTime = zapcore.ISO8601TimeEncoder
+	encoderConfig.StacktraceKey = ""
 
+	var lvl zapcore.Level
 	switch level {
 	case "debug":
-		config.Level = zap.NewAtomicLevelAt(zapcore.DebugLevel)
+		lvl = zapcore.DebugLevel
 	case "info":
-		config.Level = zap.NewAtomicLevelAt(zapcore.InfoLevel)
+		lvl = zapcore.InfoLevel
 	case "warn":
-		config.Level = zap.NewAtomicLevelAt(zapcore.WarnLevel)
+		lvl = zapcore.WarnLevel
 	case "error":
-		config.Level = zap.NewAtomicLevelAt(zapcore.ErrorLevel)
+		lvl = zapcore.ErrorLevel
 	default:
-		config.Level = zap.NewAtomicLevelAt(zapcore.InfoLevel)
+		lvl = zapcore.InfoLevel
 	}
 
-	config.OutputPaths = []string{"stdout", "app.log"}
+	fileWriter, _ := os.Create("app.log")
+	multiWriteSyncer := zapcore.NewMultiWriteSyncer(
+		zapcore.AddSync(os.Stdout),
+		zapcore.AddSync(fileWriter),
+	)
 
-	logger, _ := config.Build()
+	core := zapcore.NewCore(
+		zapcore.NewConsoleEncoder(encoderConfig),
+		multiWriteSyncer,
+		lvl,
+	)
+
+	logger := zap.New(core, zap.AddStacktrace(zapcore.PanicLevel))
 	return logger
 }
