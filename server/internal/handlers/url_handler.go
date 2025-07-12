@@ -100,7 +100,7 @@ func (h *URLHandler) RedirectURL(c fiber.Ctx) error {
 	slug := c.Params("slug")
 	if slug == "" {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
-			"error": "URL slug is required",
+			"error": "Slug is required",
 		})
 	}
 
@@ -108,7 +108,7 @@ func (h *URLHandler) RedirectURL(c fiber.Ctx) error {
 	if err != nil {
 		h.logger.Error("Failed to get URL", zap.Error(err))
 		return c.Status(fiber.StatusNotFound).JSON(fiber.Map{
-			"error": "URL not found",
+			"error": "Slug not found",
 		})
 	}
 
