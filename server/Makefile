@@ -13,12 +13,10 @@ $(LOG_FILE):
 stop:
 	sudo docker compose down
 
-clean:
-	sudo docker compose down
-
-fclean: clean
+clean: stop
 	rm -rf $(CERTS_DIR) $(LOG_FILE)
 
-re: fclean run
+rebuild: stop
+	sudo docker compose up --build -d
 
-.PHONY: run clean fclean re
+.PHONY: run stop clean rebuild
