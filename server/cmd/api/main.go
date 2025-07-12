@@ -109,5 +109,5 @@ func setupRoutes(app *fiber.App, urlHandler *handlers.URLHandler) {
 
 	app.Post("/urls", urlHandler.CreateURL)
 	app.Get("/urls/:param", urlHandler.GetURL)
-	app.Get("/:slug", urlHandler.RedirectURL)
+	app.Get("/redirect/:slug", urlHandler.RedirectURL)
 }
