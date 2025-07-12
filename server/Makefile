@@ -2,7 +2,6 @@ CERTS_DIR = .certs/
 LOG_FILE =  app.log
 
 run: $(CERTS_DIR) $(LOG_FILE)
-	touch $(LOG_FILE)
 	sudo docker compose up -d
 
 $(CERTS_DIR):
