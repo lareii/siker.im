@@ -56,12 +56,12 @@ export default function Shortener() {
 
     if (response.status === 201) {
       toast('URL başarıyla kısaltıldı', {
-        description: `kısaltılmış URL: ${process.env.NEXT_PUBLIC_APP_URL}/${response.data.slug}`,
+        description: `kısaltılmış URL: ${process.env.NEXT_PUBLIC_BASE_URL}/${response.data.slug}`,
         action: {
           label: 'Kopyala',
           onClick: () => {
             navigator.clipboard.writeText(
-              process.env.NEXT_PUBLIC_APP_URL + '/' + response.data.slug
+              process.env.NEXT_PUBLIC_BASE_URL + '/' + response.data.slug
             );
             toast('kısaltılmış URL panoya kopyalandı.');
           }
