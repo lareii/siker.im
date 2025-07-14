@@ -21,9 +21,7 @@ export default function MainContent() {
             </div>
             <h1 className="text-4xl font-black">tam sana göre!</h1>
             <div className="text-muted-foreground font-light mt-5">
-              <p>
-                bazen bir link paylaşırsın ama o link uzar da uzar.
-              </p>
+              <p>bazen bir link paylaşırsın ama o link uzar da uzar.</p>
               <p>
                 <span className="text-primary">siker.im</span>, URL&apos;lerini
                 hızlıca kısaltmana yarayan basit bir araçtır.

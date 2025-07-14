@@ -25,7 +25,10 @@ export default function Features() {
           kısaltma yapabilirsin.
         </p>
       </div>
-      <Link href="https://github.com/lareii/siker.im" className="bg-linear-to-t from-background to-card rounded-md h-60 md:col-span-2 px-5 flex flex-col justify-center">
+      <Link
+        href="https://github.com/lareii/siker.im"
+        className="bg-linear-to-t from-background to-card rounded-md h-60 md:col-span-2 px-5 flex flex-col justify-center"
+      >
         <IconBrandGithubFilled className="w-16 h-16 text-primary mb-4" />
         <h3 className="text-xl">özgür yazılım</h3>
         <p className="text-muted-foreground text-sm">

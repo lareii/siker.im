@@ -129,7 +129,10 @@ export default function Shortener() {
             kısalt
           </Button>
         </div>
-        <div className='text-xs text-muted-foreground'>eğer etiket kısmını boş bırakırsan biz senin için bir tane oluşturacağız.</div>
+        <div className="text-xs text-muted-foreground">
+          eğer etiket kısmını boş bırakırsan biz senin için bir tane
+          oluşturacağız.
+        </div>
         <Turnstile onVerify={setTurnstileToken} />
       </form>
     </Form>
