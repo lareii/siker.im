@@ -1,7 +1,7 @@
 services:
   mongodb:
     image: mongo:8.0
-    container_name: mongodb
+    container_name: siker.im-mongodb
     restart: unless-stopped
     ports:
       - "27017:27017"
@@ -22,7 +22,7 @@ services:
 
   redis:
     image: redis:7-alpine
-    container_name: redis
+    container_name: siker.im-redis
     restart: unless-stopped
     ports:
       - "127.0.0.1:6379:6379"
