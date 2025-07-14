@@ -4,7 +4,6 @@ import (
 	"context"
 	"fmt"
 	"strconv"
-	"strings"
 	"time"
 
 	"github.com/lareii/siker.im/internal/config"
@@ -28,16 +27,16 @@ func NewRateLimiter(redis *database.Redis, config *config.RateLimitConfig, logge
 	}
 }
 
-func (rl *RateLimiter) shouldRateLimit(c fiber.Ctx) bool {
-	path := c.Path()
-	method := c.Method()
+// func (rl *RateLimiter) shouldRateLimit(c fiber.Ctx) bool {
+// 	path := c.Path()
+// 	method := c.Method()
 
-	if method == "POST" && strings.HasPrefix(path, "/urls") {
-		return true
-	}
+// 	if method == "POST" && strings.HasPrefix(path, "/urls") {
+// 		return true
+// 	}
 
-	return false
-}
+// 	return false
+// }
 
 func (rl *RateLimiter) Middleware() fiber.Handler {
 	return func(c fiber.Ctx) error {
@@ -45,9 +44,9 @@ func (rl *RateLimiter) Middleware() fiber.Handler {
 			return c.Next()
 		}
 
-		if !rl.shouldRateLimit(c) {
-			return c.Next()
-		}
+		// if !rl.shouldRateLimit(c) {
+		// 	return c.Next()
+		// }
 
 		clientIP := c.IP()
 		key := fmt.Sprintf("rate_limit:%s", clientIP)

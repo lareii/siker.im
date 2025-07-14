@@ -1,18 +1,18 @@
-package config
+package utils
 
 import (
 	"os"
 	"strconv"
 )
 
-func getEnv(key, defaultValue string) string {
+func GetEnv(key, defaultValue string) string {
 	if value := os.Getenv(key); value != "" {
 		return value
 	}
 	return defaultValue
 }
 
-func getEnvAsBool(key string, defaultValue bool) bool {
+func GetEnvAsBool(key string, defaultValue bool) bool {
 	if value := os.Getenv(key); value != "" {
 		if parsed, err := strconv.ParseBool(value); err == nil {
 			return parsed
@@ -21,7 +21,7 @@ func getEnvAsBool(key string, defaultValue bool) bool {
 	return defaultValue
 }
 
-func getEnvAsInt(key string, defaultValue int) int {
+func GetEnvAsInt(key string, defaultValue int) int {
 	if value := os.Getenv(key); value != "" {
 		if parsed, err := strconv.Atoi(value); err == nil {
 			return parsed

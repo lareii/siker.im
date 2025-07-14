@@ -2,6 +2,8 @@ package config
 
 import (
 	"time"
+
+	"github.com/lareii/siker.im/internal/utils"
 )
 
 type Config struct {
@@ -10,6 +12,7 @@ type Config struct {
 	Redis     RedisConfig
 	App       AppConfig
 	RateLimit RateLimitConfig
+	Turnstile string
 	LogLevel  string
 }
 
@@ -43,27 +46,28 @@ type RateLimitConfig struct {
 func Load() (*Config, error) {
 	return &Config{
 		Server: ServerConfig{
-			Port: getEnv("PORT", "1209"),
+			Port: utils.GetEnv("PORT", "1209"),
 		},
 		Database: DatabaseConfig{
-			URI:  getEnv("MONGODB_URI", "mongodb://localhost:27017"),
-			Name: getEnv("MONGODB_NAME", "db"),
+			URI:  utils.GetEnv("MONGODB_URI", "mongodb://localhost:27017"),
+			Name: utils.GetEnv("MONGODB_NAME", "db"),
 		},
 		Redis: RedisConfig{
-			Host:     getEnv("REDIS_HOST", "localhost"),
-			Port:     getEnv("REDIS_PORT", "6379"),
-			Password: getEnv("REDIS_PASSWORD", ""),
-			DB:       getEnvAsInt("REDIS_DB", 0),
+			Host:     utils.GetEnv("REDIS_HOST", "localhost"),
+			Port:     utils.GetEnv("REDIS_PORT", "6379"),
+			Password: utils.GetEnv("REDIS_PASSWORD", ""),
+			DB:       utils.GetEnvAsInt("REDIS_DB", 0),
 		},
 		App: AppConfig{
-			AllowedOrigins: getEnv("ALLOWED_ORIGINS", "*"),
+			AllowedOrigins: utils.GetEnv("ALLOWED_ORIGINS", "*"),
 		},
 		RateLimit: RateLimitConfig{
-			Enabled:   getEnvAsBool("RATE_LIMIT_ENABLED", true),
-			Requests:  getEnvAsInt("RATE_LIMIT_REQUESTS", 100),
-			Window:    time.Duration(getEnvAsInt("RATE_LIMIT_WINDOW_MINUTES", 1)) * time.Minute,
-			BlockTime: time.Duration(getEnvAsInt("RATE_LIMIT_BLOCK_MINUTES", 5)) * time.Minute,
+			Enabled:   utils.GetEnvAsBool("RATE_LIMIT_ENABLED", true),
+			Requests:  utils.GetEnvAsInt("RATE_LIMIT_REQUESTS", 100),
+			Window:    time.Duration(utils.GetEnvAsInt("RATE_LIMIT_WINDOW_MINUTES", 1)) * time.Minute,
+			BlockTime: time.Duration(utils.GetEnvAsInt("RATE_LIMIT_BLOCK_MINUTES", 5)) * time.Minute,
 		},
-		LogLevel: getEnv("LOG_LEVEL", "info"),
+		Turnstile: utils.GetEnv("TURNSTILE_SECRET", ""),
+		LogLevel:  utils.GetEnv("LOG_LEVEL", "info"),
 	}, nil
 }
