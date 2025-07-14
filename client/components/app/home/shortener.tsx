@@ -39,7 +39,7 @@ export default function Shortener() {
   })
 
   async function onSubmit(data: z.infer<typeof formSchema>) {
-    if (!turnstileToken) {
+    if (!turnstileToken && process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY) {
       toast.error("Lütfen doğrulamayı tamamlayın.");
       return;
     }
@@ -48,11 +48,11 @@ export default function Shortener() {
 
     if (response.status === 201) {
       toast("URL başarıyla kısaltıldı!", {
-        description: `Kısaltılmış URL: ${response.data.target_url + '/' + response.data.slug}`,
+        description: `Kısaltılmış URL: ${process.env.NEXT_PUBLIC_APP_URL}/${response.data.slug}`,
         action: {
           label: "Kopyala",
           onClick: () => {
-            navigator.clipboard.writeText(response.data.target_url + '/' + response.data.slug);
+            navigator.clipboard.writeText(process.env.NEXT_PUBLIC_APP_URL + '/' + response.data.slug);
             toast("Kısaltılmış URL panoya kopyalandı!");
           },
         },
