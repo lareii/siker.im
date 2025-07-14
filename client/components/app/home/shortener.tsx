@@ -63,14 +63,18 @@ export default function Shortener() {
             navigator.clipboard.writeText(
               process.env.NEXT_PUBLIC_APP_URL + '/' + response.data.slug
             );
-            toast('kısaltılmış URL panoya kopyalandı');
+            toast('kısaltılmış URL panoya kopyalandı.');
           }
         }
       });
       setTurnstileToken(null);
       form.reset();
+    } else if (response.status === 400) {
+      toast.error('hay aksi, bir şeyler ters gitti!', {
+        description: 'lütfen geçerli bir girdi girin.'
+      });
     } else {
-      toast('hay aksi, bir şeyler ters gitti', {
+      toast('hay aksi, bir şeyler ters gitti!', {
         description: 'bir hata oluştu, lütfen daha sonra tekrar deneyin.'
       });
     }
