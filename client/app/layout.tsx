@@ -15,10 +15,29 @@ const fontMono = JetBrains_Mono({
   subsets: ['latin']
 });
 
-export const metadata: Metadata = {
-  title: 'siker.im',
-  description: 'siker.im desc'
-};
+// export const metadata: Metadata = {
+//   metadataBase: new URL("https://siker.im"),
+//   title: 'siker.im',
+//   description: 'bazen bir link paylaşırsın ama o link uzar da uzar. siker.im, URL\'lerini hızlıca kısaltmana yarayan basit bir araçtır.',
+//   keywords: [
+//     'siker.im',
+//     'url',
+//     'shortener',
+//     'short link',
+//     'short url',
+//     'link',
+//     'shorten',
+//     'short',
+//     'url shortener',
+//     'link shortener',
+//   ],
+//   openGraph: {
+//     title: 'siker.im',
+//     siteName: 'siker.im',
+//     url: "https://siker.im",
+//     description: 'bazen bir link paylaşırsın ama o link uzar da uzar. siker.im, URL\'lerini hızlıca kısaltmana yarayan basit bir araçtır.',
+//   }
+// };
 
 export default function RootLayout({
   children
