@@ -29,7 +29,7 @@ func (t *TurnstileMiddleware) Verify() fiber.Handler {
 			return c.Next()
 		}
 
-		token := c.FormValue("cf-turnstile-response")
+		token := c.Get("Cf-Turnstile-Token")
 		if token == "" {
 			return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
 				"error": "Missing Turnstile token",
