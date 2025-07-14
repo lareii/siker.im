@@ -23,10 +23,10 @@ const formSchema = z.object({
   slug: z
     .string()
     .regex(/^[a-zA-Z0-9-_]*$/, {
-      message: 'Kısaltma sadece harf, rakam, tire ve alt çizgi içerebilir.'
+      message: 'kısaltma sadece harf, rakam, tire ve alt çizgi içerebilir.'
     })
     .max(50, {
-      message: 'Kısaltma en fazla 50 karakter olmalıdır.'
+      message: 'kısaltma en fazla 50 karakter olmalıdır.'
     })
     .optional()
 });
@@ -44,7 +44,7 @@ export default function Shortener() {
 
   async function onSubmit(data: z.infer<typeof formSchema>) {
     if (!turnstileToken && process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY) {
-      toast.error('Lütfen doğrulamayı tamamlayın.');
+      toast.error('lütfen doğrulamayı tamamlayın.');
       return;
     }
 
@@ -55,23 +55,23 @@ export default function Shortener() {
     );
 
     if (response.status === 201) {
-      toast('URL başarıyla kısaltıldı!', {
-        description: `Kısaltılmış URL: ${process.env.NEXT_PUBLIC_APP_URL}/${response.data.slug}`,
+      toast('URL başarıyla kısaltıldı', {
+        description: `kısaltılmış URL: ${process.env.NEXT_PUBLIC_APP_URL}/${response.data.slug}`,
         action: {
           label: 'Kopyala',
           onClick: () => {
             navigator.clipboard.writeText(
               process.env.NEXT_PUBLIC_APP_URL + '/' + response.data.slug
             );
-            toast('Kısaltılmış URL panoya kopyalandı!');
+            toast('kısaltılmış URL panoya kopyalandı');
           }
         }
       });
       setTurnstileToken(null);
       form.reset();
     } else {
-      toast('Hay aksi, bir şeyler ters gitti.', {
-        description: 'Bir hata oluştu. Lütfen daha sonra tekrar deneyin.'
+      toast('hay aksi, bir şeyler ters gitti', {
+        description: 'bir hata oluştu, lütfen daha sonra tekrar deneyin.'
       });
     }
   }
@@ -90,7 +90,7 @@ export default function Shortener() {
               <FormControl>
                 <Input
                   type="text"
-                  placeholder="Kısaltmak istediğin URL'yi buraya yapıştır"
+                  placeholder="kısaltmak istediğin URL'yi buraya yapıştır"
                   className="bg-card text-muted-foreground text-sm"
                   {...field}
                 />
@@ -108,7 +108,7 @@ export default function Shortener() {
                 <FormControl>
                   <Input
                     type="text"
-                    placeholder="Kısaltılmış URL (isteğe bağlı)"
+                    placeholder="etiket (isteğe bağlı)"
                     className="bg-card text-muted-foreground text-sm"
                     {...field}
                   />
@@ -122,9 +122,10 @@ export default function Shortener() {
             variant="ghost"
             className="w-24 cursor-pointer animated-glow"
           >
-            Kısalt
+            kısalt
           </Button>
         </div>
+        <div className='text-xs text-muted-foreground'>eğer etiket kısmını boş bırakırsan biz senin için bir tane oluşturacağız.</div>
         <Turnstile onVerify={setTurnstileToken} />
       </form>
     </Form>

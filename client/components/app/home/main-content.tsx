@@ -22,12 +22,11 @@ export default function MainContent() {
             <h1 className="text-4xl font-black">tam sana göre!</h1>
             <div className="text-muted-foreground font-light mt-5">
               <p>
-                Bazen bir link paylaşırsın ama o link sanki bir kitap gibi uzar
-                da uzar.
+                bazen bir link paylaşırsın ama o link uzar da uzar.
               </p>
               <p>
                 <span className="text-primary">siker.im</span>, URL&apos;lerini
-                hızlıca kısaltmana yarayan basit bir araç.
+                hızlıca kısaltmana yarayan basit bir araçtır.
               </p>
             </div>
           </div>
