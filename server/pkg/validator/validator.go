@@ -3,7 +3,6 @@ package validator
 import (
 	"net/url"
 	"regexp"
-	"strings"
 
 	"github.com/go-playground/validator/v10"
 )
@@ -39,14 +38,8 @@ func validateURL(fl validator.FieldLevel) bool {
 		return false
 	}
 
-	parts := strings.Split(u.Hostname(), ".")
-	if len(parts) < 2 {
+	if u.Host == "" {
 		return false
-	}
-	for _, part := range parts {
-		if len(part) == 0 {
-			return false
-		}
 	}
 
 	return true
