@@ -19,7 +19,7 @@ func setupGlobalMiddleware(app *fiber.App, cfg *config.Config) {
 	app.Use(cors.New(cors.Config{
 		AllowOrigins: []string{cfg.App.AllowedOrigins},
 		AllowMethods: []string{"GET", "POST", "OPTIONS"},
-		AllowHeaders: []string{"Origin", "Content-Type", "Accept"},
+		AllowHeaders: []string{"Origin", "Content-Type", "Accept", "Cf-Turnstile-Token"},
 	}))
 }
 
