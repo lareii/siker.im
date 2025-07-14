@@ -1,3 +1,5 @@
+import { Toaster } from "@/components/ui/sonner"
+
 import type { Metadata } from 'next';
 import { Bricolage_Grotesque, JetBrains_Mono } from 'next/font/google';
 
@@ -27,6 +29,7 @@ export default function RootLayout({
     <html lang="tr" translate="no">
       <body className={`${fontSans.variable} ${fontMono.variable} antialiased`}>
         {children}
+        <Toaster />
       </body>
     </html>
   );
