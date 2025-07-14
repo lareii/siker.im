@@ -1,6 +1,7 @@
 package validator
 
 import (
+	"net/url"
 	"regexp"
 
 	"github.com/go-playground/validator/v10"
@@ -22,6 +23,28 @@ func validateSlug(fl validator.FieldLevel) bool {
 	return slugRegex.MatchString(slug)
 }
 
+func validateURL(fl validator.FieldLevel) bool {
+	urlStr := fl.Field().String()
+	if urlStr == "" {
+		return false
+	}
+
+	u, err := url.Parse(urlStr)
+	if err != nil {
+		return false
+	}
+
+	if u.Scheme != "http" && u.Scheme != "https" {
+		return false
+	}
+
+	if u.Host == "" {
+		return false
+	}
+
+	return true
+}
+
 func Validate(s any) error {
 	if validate == nil {
 		return nil
@@ -32,5 +55,7 @@ func Validate(s any) error {
 
 func init() {
 	validate = validator.New()
+
+	validate.RegisterValidation("url_valid", validateURL)
 	validate.RegisterValidation("slug_valid", validateSlug)
 }

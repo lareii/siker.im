@@ -14,7 +14,7 @@ type URL struct {
 }
 
 type CreateURLRequest struct {
-	TargetURL string `json:"target_url" validate:"required,url"`
+	TargetURL string `json:"target_url" validate:"required,url_valid,max=2048"`
 	Slug      string `json:"slug,omitempty" validate:"omitempty,slug_valid,max=50"`
 }
 

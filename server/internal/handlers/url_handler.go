@@ -4,6 +4,7 @@ import (
 	"github.com/lareii/siker.im/internal/middleware"
 	"github.com/lareii/siker.im/internal/models"
 	"github.com/lareii/siker.im/internal/services"
+	"github.com/lareii/siker.im/pkg/validator"
 	"go.mongodb.org/mongo-driver/v2/bson"
 
 	"github.com/gofiber/fiber/v3"
@@ -38,6 +39,12 @@ func (h *URLHandler) CreateURL(c fiber.Ctx) error {
 	if req.TargetURL == "" {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
 			"error": "Target URL is required",
+		})
+	}
+
+	if err := validator.Validate(&req); err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"error": "Missing or invalid fields",
 		})
 	}
 
