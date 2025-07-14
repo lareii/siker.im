@@ -1,6 +1,10 @@
 import api from '@/lib/api';
 
-export async function shortenUrl(targetUrl: string, slug?: string, turnstileToken?: string | null) {
+export async function shortenUrl(
+  targetUrl: string,
+  slug?: string,
+  turnstileToken?: string | null
+) {
   try {
     const payload = { target_url: targetUrl, slug };
     const headers: Record<string, string> = {};
