@@ -27,26 +27,11 @@ func NewRateLimiter(redis *database.Redis, config *config.RateLimitConfig, logge
 	}
 }
 
-// func (rl *RateLimiter) shouldRateLimit(c fiber.Ctx) bool {
-// 	path := c.Path()
-// 	method := c.Method()
-
-// 	if method == "POST" && strings.HasPrefix(path, "/urls") {
-// 		return true
-// 	}
-
-// 	return false
-// }
-
 func (rl *RateLimiter) Middleware() fiber.Handler {
 	return func(c fiber.Ctx) error {
 		if !rl.config.Enabled {
 			return c.Next()
 		}
-
-		// if !rl.shouldRateLimit(c) {
-		// 	return c.Next()
-		// }
 
 		clientIP := c.IP()
 		key := fmt.Sprintf("rate_limit:%s", clientIP)

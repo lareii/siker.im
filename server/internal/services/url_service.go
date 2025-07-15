@@ -5,6 +5,7 @@ import (
 	"errors"
 	"fmt"
 
+	"github.com/gofiber/fiber/v3"
 	"github.com/lareii/siker.im/internal/models"
 	"github.com/lareii/siker.im/internal/repository"
 	"github.com/lareii/siker.im/internal/utils"
@@ -23,36 +24,36 @@ func NewURLService(repo *repository.URLRepository) *URLService {
 	}
 }
 
-func (s *URLService) CreateURL(ctx context.Context, req *models.CreateURLRequest) (*models.URLResponse, error) {
+func (s *URLService) CreateURL(ctx context.Context, req *models.CreateURLRequest) (*models.URLResponse, int, error) {
 	var slug string
 	var err error
 
 	if req.Slug != "" {
 		exists, err := s.repo.ExistsBySlug(ctx, req.Slug)
 		if err != nil {
-			return nil, err
+			return nil, fiber.StatusInternalServerError, err
 		}
 		if exists {
-			return nil, errors.New("custom code already exists")
+			return nil, fiber.StatusConflict, errors.New("custom code already exists")
 		}
 		slug = req.Slug
 	} else {
 		slug, err = utils.GenerateSlug()
 		if err != nil {
-			return nil, err
+			return nil, fiber.StatusInternalServerError, err
 		}
 
 		for {
 			exists, err := s.repo.ExistsBySlug(ctx, slug)
 			if err != nil {
-				return nil, err
+				return nil, fiber.StatusInternalServerError, err
 			}
 			if !exists {
 				break
 			}
 			slug, err = utils.GenerateSlug()
 			if err != nil {
-				return nil, err
+				return nil, fiber.StatusInternalServerError, err
 			}
 		}
 	}
@@ -63,10 +64,10 @@ func (s *URLService) CreateURL(ctx context.Context, req *models.CreateURLRequest
 	}
 
 	if err := s.repo.Create(ctx, url); err != nil {
-		return nil, err
+		return nil, fiber.StatusInternalServerError, err
 	}
 
-	return s.toResponse(url), nil
+	return s.toResponse(url), fiber.StatusCreated, nil
 }
 
 func (s *URLService) GetURLByID(ctx context.Context, id bson.ObjectID) (*models.URLResponse, error) {

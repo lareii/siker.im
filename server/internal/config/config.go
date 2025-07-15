@@ -67,7 +67,7 @@ func Load() (*Config, error) {
 			Window:    time.Duration(utils.GetEnvAsInt("RATE_LIMIT_WINDOW_MINUTES", 1)) * time.Minute,
 			BlockTime: time.Duration(utils.GetEnvAsInt("RATE_LIMIT_BLOCK_MINUTES", 5)) * time.Minute,
 		},
-		Turnstile: utils.GetEnv("TURNSTILE_SECRET", ""),
+		Turnstile: utils.GetEnv("TURNSTILE_SECRET", "1x0000000000000000000000000000000AA"),
 		LogLevel:  utils.GetEnv("LOG_LEVEL", "info"),
 	}, nil
 }

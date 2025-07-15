@@ -1,5 +1,5 @@
 import AnimatedTextSwitcher from '@/components/app/home/text-switcher';
-import Shortener from '@/components/app/home/shortener';
+import { Shortener } from '@/components/app/shortener';
 import AnnouncementBanner from '@/components/app/home/announcement-banner';
 import Features from '@/components/app/home/features';
 

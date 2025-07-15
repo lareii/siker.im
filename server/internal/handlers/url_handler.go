@@ -48,11 +48,15 @@ func (h *URLHandler) CreateURL(c fiber.Ctx) error {
 		})
 	}
 
-	url, err := h.service.CreateURL(c.Context(), &req)
-	if err != nil {
+	url, status, err := h.service.CreateURL(c.Context(), &req)
+	if status == fiber.StatusConflict {
+		return c.Status(status).JSON(fiber.Map{
+			"error": "Custom slug already exists",
+		})
+	} else if status != fiber.StatusCreated {
 		h.logger.Error("Failed to create short URL", zap.Error(err))
-		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
-			"error": err.Error(),
+		return c.Status(status).JSON(fiber.Map{
+			"error": "Failed to create short URL",
 		})
 	}
 

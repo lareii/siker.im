@@ -31,7 +31,7 @@ func initApp(cfg *config.Config, logger *zap.Logger) (*fiber.App, func(), error)
 		return nil, cleanup, err
 	}
 
-	app := createFiberApp(logger)
+	app := createFiberApp()
 	setupRoutes(app, deps, cfg)
 
 	return app, cleanup, nil
@@ -91,15 +91,9 @@ func initRedis(cfg *config.Config, logger *zap.Logger) (*database.Redis, error) 
 	return redis, nil
 }
 
-func createFiberApp(logger *zap.Logger) *fiber.App {
+func createFiberApp() *fiber.App {
 	return fiber.New(fiber.Config{
 		AppName:      "siker.im",
 		ServerHeader: "Fiber",
-		ErrorHandler: func(c fiber.Ctx, err error) error {
-			logger.Error("Request error", zap.Error(err))
-			return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
-				"error": "Internal server error",
-			})
-		},
 	})
 }

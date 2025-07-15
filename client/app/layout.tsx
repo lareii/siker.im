@@ -1,6 +1,7 @@
 import { Toaster } from '@/components/ui/sonner';
 
-import type { Metadata } from 'next';
+// import type { Metadata } from 'next';
+import Script from 'next/script';
 import { Bricolage_Grotesque, JetBrains_Mono } from 'next/font/google';
 
 import '@/styles/main.css';
@@ -50,6 +51,10 @@ export default function RootLayout({
         {children}
         <Toaster />
       </body>
+      <Script
+        src="https://challenges.cloudflare.com/turnstile/v0/api.js"
+        strategy="afterInteractive"
+      />
     </html>
   );
 }
