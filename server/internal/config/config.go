@@ -1,6 +1,7 @@
 package config
 
 import (
+	"strings"
 	"time"
 
 	"github.com/lareii/siker.im/internal/utils"
@@ -33,7 +34,7 @@ type RedisConfig struct {
 }
 
 type AppConfig struct {
-	AllowedOrigins string
+	AllowedOrigins []string
 }
 
 type RateLimitConfig struct {
@@ -59,7 +60,7 @@ func Load() (*Config, error) {
 			DB:       utils.GetEnvAsInt("REDIS_DB", 0),
 		},
 		App: AppConfig{
-			AllowedOrigins: utils.GetEnv("ALLOWED_ORIGINS", "*"),
+			AllowedOrigins: strings.Split(utils.GetEnv("ALLOWED_ORIGINS", "*"), ","),
 		},
 		RateLimit: RateLimitConfig{
 			Enabled:   utils.GetEnvAsBool("RATE_LIMIT_ENABLED", true),
