@@ -5,7 +5,8 @@ export function useTurnstile() {
   const [showWidget, setShowWidget] = useState(false);
   const [widgetKey, setWidgetKey] = useState(0);
 
-  const siteKey = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY || '1x00000000000000000000AA';
+  const siteKey =
+    process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY || '1x00000000000000000000AA';
 
   function onVerify(token: string) {
     setToken(token);
@@ -14,7 +15,9 @@ export function useTurnstile() {
 
   useEffect(() => {
     if (showWidget && window.turnstile) {
-      const container = document.getElementById(`turnstile-container-${widgetKey}`);
+      const container = document.getElementById(
+        `turnstile-container-${widgetKey}`
+      );
       if (container) {
         window.turnstile.render(container, {
           sitekey: siteKey,
@@ -22,7 +25,7 @@ export function useTurnstile() {
         });
       }
     }
-  }, [showWidget, widgetKey]);
+  }, [showWidget, widgetKey, siteKey]);
 
   function showNewWidget() {
     setToken(null);

@@ -32,12 +32,7 @@ export function Shortener() {
     defaultValues: { targetUrl: '', slug: '' }
   });
 
-  const {
-    token,
-    showWidget,
-    showNewWidget,
-    widgetKey
-  } = useTurnstile();
+  const { token, showWidget, showNewWidget, widgetKey } = useTurnstile();
 
   async function onSubmit() {
     showNewWidget();
@@ -79,7 +74,7 @@ export function Shortener() {
     }
 
     submitWithToken();
-  }, [token]);
+  }, [token, form]);
 
   return (
     <>
@@ -104,13 +99,11 @@ export function Shortener() {
             </Button>
           </div>
           <div className="text-xs text-muted-foreground">
-            eğer etiket kısmını boş bırakırsan biz senin için bir tane oluşturacağız.
+            eğer etiket kısmını boş bırakırsan biz senin için bir tane
+            oluşturacağız.
           </div>
           {showWidget && (
-            <div
-              id={`turnstile-container-${widgetKey}`}
-              className="mt-4"
-            />
+            <div id={`turnstile-container-${widgetKey}`} className="mt-4" />
           )}
         </form>
       </Form>
