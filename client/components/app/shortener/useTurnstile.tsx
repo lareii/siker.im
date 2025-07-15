@@ -19,9 +19,13 @@ export function useTurnstile() {
         `turnstile-container-${widgetKey}`
       );
       if (container) {
+        container.innerHTML = '';
         window.turnstile.render(container, {
           sitekey: siteKey,
-          callback: onVerify
+          callback: (token: string) => {
+            setToken(token);
+            setShowWidget(false);
+          }
         });
       }
     }
