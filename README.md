@@ -1,4 +1,4 @@
-<img src=".github/assets/siker.im.svg" alt="siker.im logo" width="200">
+<img src=".github/assets/siker.im.svg" alt="siker.im logo" width="300">
 
 🔗 A simple URL shortener service.
 
