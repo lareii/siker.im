@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { IconBrandGithubFilled, IconMugFilled } from '@tabler/icons-react';
+import { IconBrandGithubFilled, IconHeartFilled } from '@tabler/icons-react';
 
 export default function Footer() {
   return (
@@ -11,10 +11,10 @@ export default function Footer() {
           </Link>
           <div className="flex md:hidden gap-x-5">
             <Link
-              href="https://buymeacoffee.com/larei"
+              href="https://github.com/sponsors/lareii"
               className="text-xs text-muted-foreground items-center flex gap-x-1"
             >
-              <IconMugFilled className="inline w-3.5 h-3.5" /> Buy Me a Coffee
+              <IconHeartFilled className="inline w-3.5 h-3.5" /> Sponsor
             </Link>
             <Link
               href="https://github.com/lareii/siker.im"
@@ -26,10 +26,10 @@ export default function Footer() {
         </div>
         <div className="flex gap-x-10 max-md:hidden">
           <Link
-            href="https://buymeacoffee.com/larei"
+            href="https://github.com/sponsors/lareii"
             className="text-xs text-muted-foreground items-center flex gap-x-1"
           >
-            <IconMugFilled className="inline w-3.5 h-3.5" /> Buy Me a Coffee
+            <IconHeartFilled className="inline w-3.5 h-3.5" /> Sponsor
           </Link>
           <Link
             href="https://github.com/lareii/siker.im"
