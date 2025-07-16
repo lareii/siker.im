@@ -48,18 +48,18 @@ func (h *URLHandler) CreateURL(c fiber.Ctx) error {
 		})
 	}
 
-	url, status, err := h.service.CreateURL(c.Context(), &req)
+	url, status := h.service.CreateURL(c.Context(), &req)
 	if status == fiber.StatusConflict {
 		return c.Status(status).JSON(fiber.Map{
 			"error": "Custom slug already exists",
 		})
 	} else if status != fiber.StatusCreated {
-		h.logger.Error("Failed to create short URL", zap.Error(err))
 		return c.Status(status).JSON(fiber.Map{
 			"error": "Failed to create short URL",
 		})
 	}
 
+	h.logger.Info("URL created", zap.String("slug", url.Slug), zap.String("target_url", url.TargetURL))
 	return c.Status(fiber.StatusCreated).JSON(url)
 }
 
@@ -80,7 +80,6 @@ func (h *URLHandler) GetURL(c fiber.Ctx) error {
 	}
 
 	if err != nil {
-		h.logger.Error("Failed to get URL", zap.Error(err))
 		return c.Status(fiber.StatusNotFound).JSON(fiber.Map{
 			"error": err.Error(),
 		})
@@ -98,7 +97,6 @@ func (h *URLHandler) GetURL(c fiber.Ctx) error {
 // 	}
 
 // 	if err := h.service.DeleteURL(c.Context(), id); err != nil {
-// 		h.logger.Error("Failed to delete URL", zap.Error(err))
 // 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
 // 			"error": "Failed to delete URL",
 // 		})
@@ -115,13 +113,21 @@ func (h *URLHandler) RedirectURL(c fiber.Ctx) error {
 		})
 	}
 
-	url, err := h.service.GetTargetURL(c.Context(), slug)
-	if err != nil {
-		h.logger.Error("Failed to get URL", zap.Error(err))
-		return c.Status(fiber.StatusNotFound).JSON(fiber.Map{
+	url, status := h.service.GetTargetURL(c.Context(), slug)
+	switch status {
+	case fiber.StatusFound:
+		return c.Redirect().To(url)
+	case fiber.StatusNotFound:
+		return c.Status(status).JSON(fiber.Map{
 			"error": "Slug not found",
 		})
+	case fiber.StatusForbidden:
+		return c.Status(status).JSON(fiber.Map{
+			"error": "Slug is inactive",
+		})
+	default:
+		return c.Status(status).JSON(fiber.Map{
+			"error": "Internal server error",
+		})
 	}
-
-	return c.Redirect().To(url)
 }

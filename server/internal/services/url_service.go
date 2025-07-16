@@ -24,36 +24,36 @@ func NewURLService(repo *repository.URLRepository) *URLService {
 	}
 }
 
-func (s *URLService) CreateURL(ctx context.Context, req *models.CreateURLRequest) (*models.URLResponse, int, error) {
+func (s *URLService) CreateURL(ctx context.Context, req *models.CreateURLRequest) (*models.URLResponse, int) {
 	var slug string
 	var err error
 
 	if req.Slug != "" {
 		exists, err := s.repo.ExistsBySlug(ctx, req.Slug)
 		if err != nil {
-			return nil, fiber.StatusInternalServerError, err
+			return nil, fiber.StatusInternalServerError
 		}
 		if exists {
-			return nil, fiber.StatusConflict, errors.New("custom code already exists")
+			return nil, fiber.StatusConflict
 		}
 		slug = req.Slug
 	} else {
 		slug, err = utils.GenerateSlug()
 		if err != nil {
-			return nil, fiber.StatusInternalServerError, err
+			return nil, fiber.StatusInternalServerError
 		}
 
 		for {
 			exists, err := s.repo.ExistsBySlug(ctx, slug)
 			if err != nil {
-				return nil, fiber.StatusInternalServerError, err
+				return nil, fiber.StatusInternalServerError
 			}
 			if !exists {
 				break
 			}
 			slug, err = utils.GenerateSlug()
 			if err != nil {
-				return nil, fiber.StatusInternalServerError, err
+				return nil, fiber.StatusInternalServerError
 			}
 		}
 	}
@@ -64,10 +64,10 @@ func (s *URLService) CreateURL(ctx context.Context, req *models.CreateURLRequest
 	}
 
 	if err := s.repo.Create(ctx, url); err != nil {
-		return nil, fiber.StatusInternalServerError, err
+		return nil, fiber.StatusInternalServerError
 	}
 
-	return s.toResponse(url), fiber.StatusCreated, nil
+	return s.toResponse(url), fiber.StatusCreated
 }
 
 func (s *URLService) GetURLByID(ctx context.Context, id bson.ObjectID) (*models.URLResponse, error) {
@@ -94,20 +94,24 @@ func (s *URLService) GetURLBySlug(ctx context.Context, slug string) (*models.URL
 	return s.toResponse(url), nil
 }
 
-func (s *URLService) GetTargetURL(ctx context.Context, slug string) (string, error) {
+func (s *URLService) GetTargetURL(ctx context.Context, slug string) (string, int) {
 	url, err := s.repo.GetBySlug(ctx, slug)
 	if err != nil {
 		if errors.Is(err, mongo.ErrNoDocuments) {
-			return "", errors.New("slug not found")
+			return "", fiber.StatusNotFound
 		}
-		return "", err
+		return "", fiber.StatusInternalServerError
+	}
+
+	if !url.IsActive {
+		return "", fiber.StatusForbidden
 	}
 
 	if err := s.repo.IncrementClickCount(ctx, slug); err != nil {
 		fmt.Printf("Failed to increment click count: %v\n", err)
 	}
 
-	return url.TargetURL, nil
+	return url.TargetURL, fiber.StatusFound
 }
 
 // func (s *URLService) DeleteURL(ctx context.Context, id string) error {

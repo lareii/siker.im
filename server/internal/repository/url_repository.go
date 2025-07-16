@@ -37,7 +37,7 @@ func (r *URLRepository) Create(ctx context.Context, url *models.URL) error {
 
 func (r *URLRepository) GetBySlug(ctx context.Context, slug string) (*models.URL, error) {
 	var url models.URL
-	filter := bson.M{"slug": slug, "is_active": true}
+	filter := bson.M{"slug": slug}
 
 	err := r.collection.FindOne(ctx, filter).Decode(&url)
 	if err != nil {
@@ -49,7 +49,7 @@ func (r *URLRepository) GetBySlug(ctx context.Context, slug string) (*models.URL
 
 func (r *URLRepository) GetByID(ctx context.Context, id bson.ObjectID) (*models.URL, error) {
 	var url models.URL
-	filter := bson.M{"_id": id, "is_active": true}
+	filter := bson.M{"_id": id}
 
 	err := r.collection.FindOne(ctx, filter).Decode(&url)
 	if err != nil {
