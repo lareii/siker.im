@@ -36,7 +36,6 @@ export function Shortener() {
     defaultValues: { targetUrl: '', slug: '' }
   });
 
-
   async function onSubmit() {
     showNewWidget();
   }
@@ -105,10 +104,12 @@ export function Shortener() {
             >
               {isLoading ? (
                 <>
-                  <IconInnerShadowBottomLeft className='inline w-3.5 h-3.5 animate-spin' />
+                  <IconInnerShadowBottomLeft className="inline w-3.5 h-3.5 animate-spin" />
                   kısalt
                 </>
-              ) : 'kısalt'}
+              ) : (
+                'kısalt'
+              )}
             </Button>
           </div>
           <div className="text-xs text-muted-foreground">
