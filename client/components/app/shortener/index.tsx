@@ -48,20 +48,21 @@ export function Shortener() {
 
       const data = form.getValues();
       const response = await shortenUrl(data.targetUrl, data.slug, token);
+      const shortUrl = `${process.env.NEXT_PUBLIC_BASE_URL}/${data.slug}`;
 
       switch (response.status) {
         case 201:
+          navigator.clipboard.writeText(shortUrl);
           toast.success('URL başarıyla kısaltıldı', {
-            description: `kısaltılmış URL: ${process.env.NEXT_PUBLIC_BASE_URL}/${response.data.slug}`,
+            description: `kısaltılmış URL: ${shortUrl}`,
             action: {
               label: 'kopyala',
               onClick: () => {
-                navigator.clipboard.writeText(
-                  `${process.env.NEXT_PUBLIC_BASE_URL}/${response.data.slug}`
-                );
+                navigator.clipboard.writeText(shortUrl);
                 toast.success('kısaltılmış URL panoya kopyalandı.');
               }
-            }
+            },
+            duration: 30000
           });
           form.reset();
           break;
