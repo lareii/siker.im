@@ -6,15 +6,16 @@ import { useTurnstile } from '@/components/app/shortener/useTurnstile';
 import { Form } from '@/components/ui/form';
 import { Button } from '@/components/ui/button';
 
+import { IconInnerShadowBottomLeft } from '@tabler/icons-react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { toast } from 'sonner';
 import Script from 'next/script';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { z } from 'zod';
 
 const formSchema = z.object({
-  targetUrl: z.string().url({ message: 'Geçerli bir URL girin.' }),
+  targetUrl: z.url({ message: 'Geçerli bir URL girin.' }),
   slug: z
     .string()
     .regex(/^[a-zA-Z0-9-_]*$/, {
@@ -27,12 +28,14 @@ const formSchema = z.object({
 });
 
 export function Shortener() {
+  const [isLoading, setIsLoading] = useState(false);
+  const { token, showWidget, showNewWidget, widgetKey } = useTurnstile();
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: { targetUrl: '', slug: '' }
   });
 
-  const { token, showWidget, showNewWidget, widgetKey } = useTurnstile();
 
   async function onSubmit() {
     showNewWidget();
@@ -41,6 +44,8 @@ export function Shortener() {
   useEffect(() => {
     async function submitWithToken() {
       if (!token) return;
+
+      setIsLoading(true);
 
       const data = form.getValues();
       const response = await shortenUrl(data.targetUrl, data.slug, token);
@@ -71,6 +76,8 @@ export function Shortener() {
           toast.error('bir hata oluştu, lütfen daha sonra tekrar deneyin.');
           break;
       }
+
+      setIsLoading(false);
     }
 
     submitWithToken();
@@ -94,8 +101,14 @@ export function Shortener() {
               type="submit"
               variant="ghost"
               className="w-24 cursor-pointer animated-glow"
+              disabled={isLoading}
             >
-              kısalt
+              {isLoading ? (
+                <>
+                  <IconInnerShadowBottomLeft className='inline w-3.5 h-3.5 animate-spin' />
+                  kısalt
+                </>
+              ) : 'kısalt'}
             </Button>
           </div>
           <div className="text-xs text-muted-foreground">
