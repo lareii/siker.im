@@ -55,7 +55,7 @@ func (h *URLHandler) CreateURL(c fiber.Ctx) error {
 		})
 	} else if status != fiber.StatusCreated {
 		return c.Status(status).JSON(fiber.Map{
-			"error": "Failed to create short URL",
+			"error": "Internal server error",
 		})
 	}
 
@@ -114,20 +114,19 @@ func (h *URLHandler) RedirectURL(c fiber.Ctx) error {
 	}
 
 	url, status := h.service.GetTargetURL(c.Context(), slug)
-	switch status {
-	case fiber.StatusFound:
-		return c.Redirect().To(url)
-	case fiber.StatusNotFound:
+	if status == fiber.StatusNotFound {
 		return c.Status(status).JSON(fiber.Map{
 			"error": "Slug not found",
 		})
-	case fiber.StatusForbidden:
+	} else if status == fiber.StatusForbidden {
 		return c.Status(status).JSON(fiber.Map{
 			"error": "Slug is inactive",
 		})
-	default:
+	} else if status != fiber.StatusFound {
 		return c.Status(status).JSON(fiber.Map{
 			"error": "Internal server error",
 		})
 	}
+
+	return c.Redirect().To(url)
 }

@@ -3,7 +3,6 @@ package services
 import (
 	"context"
 	"errors"
-	"fmt"
 
 	"github.com/gofiber/fiber/v3"
 	"github.com/lareii/siker.im/internal/models"
@@ -107,10 +106,7 @@ func (s *URLService) GetTargetURL(ctx context.Context, slug string) (string, int
 		return "", fiber.StatusForbidden
 	}
 
-	if err := s.repo.IncrementClickCount(ctx, slug); err != nil {
-		fmt.Printf("Failed to increment click count: %v\n", err)
-	}
-
+	s.repo.IncrementClickCount(ctx, slug)
 	return url.TargetURL, fiber.StatusFound
 }
 

@@ -84,30 +84,29 @@ func (r *URLRepository) GetByID(ctx context.Context, id bson.ObjectID) (*models.
 // 	return urls, cursor.Err()
 // }
 
-func (r *URLRepository) IncrementClickCount(ctx context.Context, slug string) error {
+func (r *URLRepository) IncrementClickCount(ctx context.Context, slug string) {
 	filter := bson.M{"slug": slug, "is_active": true}
 	update := bson.M{
 		"$inc": bson.M{"click_count": 1},
 	}
 
-	_, err := r.collection.UpdateOne(ctx, filter, update)
-	return err
+	r.collection.UpdateOne(ctx, filter, update)
 }
 
-func (r *URLRepository) Delete(ctx context.Context, id bson.ObjectID) error {
-	filter := bson.M{"_id": id}
-	update := bson.M{
-		"$set": bson.M{
-			"is_active": false,
-		},
-	}
+// func (r *URLRepository) Delete(ctx context.Context, id bson.ObjectID) error {
+// 	filter := bson.M{"_id": id}
+// 	update := bson.M{
+// 		"$set": bson.M{
+// 			"is_active": false,
+// 		},
+// 	}
 
-	_, err := r.collection.UpdateOne(ctx, filter, update)
-	return err
-}
+// 	_, err := r.collection.UpdateOne(ctx, filter, update)
+// 	return err
+// }
 
 func (r *URLRepository) ExistsBySlug(ctx context.Context, slug string) (bool, error) {
-	filter := bson.M{"slug": slug, "is_active": true}
+	filter := bson.M{"slug": slug}
 	count, err := r.collection.CountDocuments(ctx, filter)
 	return count > 0, err
 }
