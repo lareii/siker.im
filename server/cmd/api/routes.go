@@ -25,9 +25,7 @@ func setupGlobalMiddleware(app *fiber.App, cfg *config.Config) {
 
 func setupAPIRoutes(app *fiber.App, deps *dependencies) {
 	app.Get("/", func(c fiber.Ctx) error {
-		return c.Status(fiber.StatusOK).JSON(fiber.Map{
-			"message": "OK!",
-		})
+		return c.Redirect().To("https://http.cat/418")
 	})
 
 	app.Post("/urls", deps.URLHandler.CreateURL, deps.Middleware.RateLimiter.Middleware(), deps.Middleware.Turnstile.Verify())
