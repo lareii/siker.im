@@ -17,9 +17,10 @@ const fontMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://siker.im"),
+  metadataBase: new URL('https://siker.im'),
   title: 'siker.im',
-  description: 'bazen bir link paylaşırsın ama o link uzar da uzar. siker.im, URL\'lerini hızlıca kısaltmana yarayan basit bir araçtır.',
+  description:
+    "bazen bir link paylaşırsın ama o link uzar da uzar. siker.im, URL'lerini hızlıca kısaltmana yarayan basit bir araçtır.",
   keywords: [
     'siker.im',
     'url',
@@ -30,15 +31,16 @@ export const metadata: Metadata = {
     'shorten',
     'short',
     'url shortener',
-    'link shortener',
+    'link shortener'
   ],
   openGraph: {
     type: 'website',
     locale: 'tr_TR',
     title: 'siker.im',
     siteName: 'siker.im',
-    url: "https://siker.im",
-    description: 'bazen bir link paylaşırsın ama o link uzar da uzar. siker.im, URL\'lerini hızlıca kısaltmana yarayan basit bir araçtır.',
+    url: 'https://siker.im',
+    description:
+      "bazen bir link paylaşırsın ama o link uzar da uzar. siker.im, URL'lerini hızlıca kısaltmana yarayan basit bir araçtır.",
     images: [
       {
         url: '/og-image.png',
@@ -46,7 +48,7 @@ export const metadata: Metadata = {
         height: 640,
         alt: 'copl.uk'
       }
-    ],
+    ]
   }
 };
 
