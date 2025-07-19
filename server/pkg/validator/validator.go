@@ -28,7 +28,7 @@ func validateURL(fl validator.FieldLevel) bool {
 		return false
 	}
 
-	urlRegex := regexp.MustCompile(`^(https?:\/\/)?((localhost)|(([\w-]+\.)+[\w-]{2,})|(\d{1,3}(\.\d{1,3}){3}))(:\d+)?\/?$`)
+	urlRegex := regexp.MustCompile(`^(https?:\/\/)?((localhost)|(([\w-]+\.)+[\w-]{2,})|(\d{1,3}(\.\d{1,3}){3}))(:\d+)?(\/[^\s?#]*)?(\?[^\s#]*)?(#[^\s]*)?$`)
 	return urlRegex.MatchString(url)
 }
 

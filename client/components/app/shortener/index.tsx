@@ -18,7 +18,7 @@ const formSchema = z.object({
   targetUrl: z
     .string()
     .regex(
-      /^(https?:\/\/)?((localhost)|(([\w-]+\.)+[\w-]{2,})|(\d{1,3}(\.\d{1,3}){3}))(:\d+)?\/?$/,
+      /^(https?:\/\/)?((localhost)|(([\w-]+\.)+[\w-]{2,})|(\d{1,3}(\.\d{1,3}){3}))(:\d+)?(\/[^\s?#]*)?(\?[^\s#]*)?(#[^\s]*)?$/,
       {
         message: 'geçerli bir URL girin.'
       }
