@@ -58,7 +58,7 @@ func (s *URLService) CreateURL(ctx context.Context, req *models.CreateURLRequest
 		}
 	}
 
-	if !strings.HasPrefix(req.TargetURL, "http://") || !strings.HasPrefix(req.TargetURL, "https://") {
+	if !strings.HasPrefix(req.TargetURL, "http://") && !strings.HasPrefix(req.TargetURL, "https://") {
 		req.TargetURL = "http://" + req.TargetURL
 	}
 
