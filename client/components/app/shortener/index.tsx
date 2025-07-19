@@ -15,9 +15,14 @@ import { useEffect, useState } from 'react';
 import { z } from 'zod';
 
 const formSchema = z.object({
-  targetUrl: z.string().regex(/^(https?:\/\/)?((localhost)|(([\w-]+\.)+[\w-]{2,})|(\d{1,3}(\.\d{1,3}){3}))(:\d+)?\/?$/, {
-    message: 'geçerli bir URL girin.'
-  }),
+  targetUrl: z
+    .string()
+    .regex(
+      /^(https?:\/\/)?((localhost)|(([\w-]+\.)+[\w-]{2,})|(\d{1,3}(\.\d{1,3}){3}))(:\d+)?\/?$/,
+      {
+        message: 'geçerli bir URL girin.'
+      }
+    ),
   slug: z
     .string()
     .regex(/^[a-zA-Z0-9-_]*$/, {
@@ -75,7 +80,7 @@ export function Shortener() {
           break;
         case 409:
           toast.error('hay aksi, bir hata oluştu!', {
-            description: 'bu kısaltma etiketi zaten mevcut.',
+            description: 'bu kısaltma etiketi zaten mevcut.'
           });
           break;
         default:
