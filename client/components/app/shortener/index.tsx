@@ -94,9 +94,9 @@ export function Shortener() {
           onSubmit={form.handleSubmit(onSubmit)}
           className="flex flex-col gap-y-2 mt-10 rounded-lg md:w-1/2"
         >
-          <TargetUrlInput control={form.control} />
+          <TargetUrlInput control={form.control} isLoading={isLoading} />
           <div className="flex gap-x-2">
-            <SlugInput control={form.control} />
+            <SlugInput control={form.control} isLoading={isLoading} />
             <Button
               type="submit"
               variant="ghost"

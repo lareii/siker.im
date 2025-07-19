@@ -10,9 +10,10 @@ import { Control } from 'react-hook-form';
 
 interface Props {
   control: Control<any>;
+  isLoading: boolean;
 }
 
-export function TargetUrlInput({ control }: Props) {
+export function TargetUrlInput({ control, isLoading }: Props) {
   return (
     <FormField
       control={control}
@@ -25,6 +26,7 @@ export function TargetUrlInput({ control }: Props) {
               placeholder="kısaltmak istediğin URL'yi buraya yapıştır"
               className="bg-card text-muted-foreground text-sm"
               {...field}
+              disabled={isLoading}
             />
           </FormControl>
           <FormMessage />
@@ -34,7 +36,7 @@ export function TargetUrlInput({ control }: Props) {
   );
 }
 
-export function SlugInput({ control }: Props) {
+export function SlugInput({ control, isLoading }: Props) {
   return (
     <FormField
       control={control}
@@ -47,6 +49,7 @@ export function SlugInput({ control }: Props) {
               placeholder="etiket (isteğe bağlı)"
               className="bg-card text-muted-foreground text-sm"
               {...field}
+              disabled={isLoading}
             />
           </FormControl>
           <FormMessage />
