@@ -3,6 +3,7 @@ package services
 import (
 	"context"
 	"errors"
+	"strings"
 
 	"github.com/gofiber/fiber/v3"
 	"github.com/lareii/siker.im/internal/models"
@@ -55,6 +56,10 @@ func (s *URLService) CreateURL(ctx context.Context, req *models.CreateURLRequest
 				return nil, fiber.StatusInternalServerError
 			}
 		}
+	}
+
+	if !strings.HasPrefix(req.TargetURL, "http://") || !strings.HasPrefix(req.TargetURL, "https://") {
+		req.TargetURL = "http://" + req.TargetURL
 	}
 
 	url := &models.URL{

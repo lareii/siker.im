@@ -15,7 +15,9 @@ import { useEffect, useState } from 'react';
 import { z } from 'zod';
 
 const formSchema = z.object({
-  targetUrl: z.url({ message: 'Geçerli bir URL girin.' }),
+  targetUrl: z.string().regex(/^(https?:\/\/)?((localhost)|(([\w-]+\.)+[\w-]{2,})|(\d{1,3}(\.\d{1,3}){3}))(:\d+)?\/?$/, {
+    message: 'geçerli bir URL girin.'
+  }),
   slug: z
     .string()
     .regex(/^[a-zA-Z0-9-_]*$/, {
@@ -48,10 +50,10 @@ export function Shortener() {
 
       const data = form.getValues();
       const response = await shortenUrl(data.targetUrl, data.slug, token);
-      const shortUrl = `${process.env.NEXT_PUBLIC_BASE_URL}/${data.slug}`;
 
       switch (response.status) {
         case 201:
+          const shortUrl = `${process.env.NEXT_PUBLIC_BASE_URL}/${response.data.slug}`;
           navigator.clipboard.writeText(shortUrl);
           toast.success('URL başarıyla kısaltıldı', {
             description: `kısaltılmış URL: ${shortUrl}`,
@@ -67,13 +69,19 @@ export function Shortener() {
           form.reset();
           break;
         case 400:
-          toast.error('geçersiz url veya kısaltma etiketi.');
+          toast.error('hay aksi, bir hata oluştu!', {
+            description: 'lütfen geçerli bir URL girin.'
+          });
           break;
         case 409:
-          toast.error('bu kısaltma etiketi zaten mevcut.');
+          toast.error('hay aksi, bir hata oluştu!', {
+            description: 'bu kısaltma etiketi zaten mevcut.',
+          });
           break;
         default:
-          toast.error('bir hata oluştu, lütfen daha sonra tekrar deneyin.');
+          toast.error('hay aksi, bir hata oluştu!', {
+            description: 'bir hata oluştu, lütfen daha sonra tekrar deneyin.'
+          });
           break;
       }
 
