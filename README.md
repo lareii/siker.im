@@ -8,7 +8,7 @@ This guide explains how to self-host the backend services of **siker.im** using 
 ### Stack Overview
 - **Next.js 15** – Frontend app, hosted on Vercel.
 - **Go (Fiber)** – REST API backend.
-- **MongoDB** – Encrypted NoSQL database.
+- **MongoDB** - A NoSQL database.
 - **Redis** – In-memory store used for rate-limiting.
 - **Docker Compose** – Container orchestration for local development.
 
@@ -19,6 +19,7 @@ To set up the server, follow these steps:
 ```bash
 git clone git@github.com:lareii/siker.im.git
 ```
+
 ### 2. Navigate to the server directory
 ```bash
 cd siker.im/server
@@ -49,11 +50,11 @@ Located in `.env` inside `/server`.
 
 | Name                        | Description                                               | Default Value                         |
 | --------------------------- | --------------------------------------------------------- | ------------------------------------- |
-| `MONGODB_URI`               | Full MongoDB URI (with credentials and TLS if applicable) | `mongodb://localhost:27017`           |
+| `MONGODB_URI`               | Full MongoDB URI (with credentials and TLS if applicable) | `mongodb://mongodb:27017`             |
 | `MONGODB_NAME`              | Name of the MongoDB database                              | `db`                                  |
 | `MONGODB_USERNAME`          | MongoDB username                                          | –                                     |
 | `MONGODB_PASSWORD`          | MongoDB password                                          | –                                     |
-| `REDIS_HOST`                | Redis hostname                                            | `localhost`                           |
+| `REDIS_HOST`                | Redis hostname                                            | `redis`                               |
 | `REDIS_PORT`                | Redis port                                                | `6379`                                |
 | `REDIS_PASSWORD`            | Redis password (if any)                                   | –                                     |
 | `REDIS_DB`                  | Redis DB index                                            | `0`                                   |
@@ -65,10 +66,6 @@ Located in `.env` inside `/server`.
 | `RATE_LIMIT_WINDOW_MINUTES` | Rate-limiting window in minutes                           | `1`                                   |
 | `RATE_LIMIT_BLOCK_MINUTES`  | Block time (in minutes) after rate limit exceeded         | `5`                                   |
 | `TURNSTILE_SECRET`          | Cloudflare Turnstile secret key                           | `1x0000000000000000000000000000000AA` |
-
-> [!IMPORTANT]
-> MongoDB is encrypted and exposed to the public in default setup.
-> For local-only use, remove certificate mounts and expose via local ports in `docker-compose.yml`.
 
 ## Front-end Setup Instructions
 ### 1. Clone the repository
@@ -109,10 +106,4 @@ Located in `.env` inside `/client`.
 | `NEXT_PUBLIC_API_URL`            | Base URL of the API (e.g., `http://localhost:1209`) |
 | `NEXT_PUBLIC_TURNSTILE_SITE_KEY` | Cloudflare Turnstile site key                       |
 
-## Additional Notes
-- Deploy the frontend easily via [Vercel](https://vercel.com/) and set the API URL in their environment settings.
-- Set up HTTPS with Nginx for reverse proxying to the backend.
-- Secure MongoDB and Redis ports — do not expose them to the public unless behind firewalls or authentication.
-
-## License
 This project is licensed under the AGPL-3.0 License. See the [LICENSE](./LICENSE) file for details.

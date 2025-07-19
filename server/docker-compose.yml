@@ -3,32 +3,31 @@ services:
     image: mongo:8.0
     container_name: siker.im-mongodb
     restart: unless-stopped
-    ports:
-      - "27017:27017"
+    expose:
+      - "27017"
     volumes:
-      - ./.certs/ca.crt:/etc/ssl/ca.crt:ro
-      - ./.certs/mongo.pem:/etc/ssl/mongo.pem:ro
       - mongo_data:/data/db
     command: >
       mongod
         --auth
-        --tlsMode requireTLS
-        --tlsCAFile /etc/ssl/ca.crt
-        --tlsCertificateKeyFile /etc/ssl/mongo.pem
         --bind_ip_all
     environment:
       - MONGO_INITDB_ROOT_USERNAME=${MONGODB_USERNAME}
       - MONGO_INITDB_ROOT_PASSWORD=${MONGODB_PASSWORD}
+    networks:
+      - default
 
   redis:
     image: redis:7-alpine
     container_name: siker.im-redis
     restart: unless-stopped
-    ports:
-      - "127.0.0.1:6379:6379"
+    expose:
+      - "6379"
     command: redis-server --appendonly yes
     volumes:
       - redis_data:/data
+    networks:
+      - default
 
   api:
     build: .
@@ -37,15 +36,20 @@ services:
     ports:
       - "1209:1209"
     volumes:
-      - ./.certs/ca.crt:/etc/ssl/ca.crt:ro
-      - ./.certs/mongo-client.pem:/etc/ssl/mongo-client.pem:ro
       - ./app.log:/root/app.log
+      - ./.env:/root/.env
     env_file:
       - .env
     depends_on:
       - mongodb
       - redis
+    networks:
+      - default
 
 volumes:
   mongo_data:
   redis_data:
+
+networks:
+  default:
+    driver: bridge

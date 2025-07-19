@@ -50,11 +50,11 @@ func Load() (*Config, error) {
 			Port: utils.GetEnv("PORT", "1209"),
 		},
 		Database: DatabaseConfig{
-			URI:  utils.GetEnv("MONGODB_URI", "mongodb://localhost:27017"),
+			URI:  utils.GetEnv("MONGODB_URI", "mongodb://mongodb:27017"),
 			Name: utils.GetEnv("MONGODB_NAME", "db"),
 		},
 		Redis: RedisConfig{
-			Host:     utils.GetEnv("REDIS_HOST", "localhost"),
+			Host:     utils.GetEnv("REDIS_HOST", "redis"),
 			Port:     utils.GetEnv("REDIS_PORT", "6379"),
 			Password: utils.GetEnv("REDIS_PASSWORD", ""),
 			DB:       utils.GetEnvAsInt("REDIS_DB", 0),
